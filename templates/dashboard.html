@@ -1,0 +1,10 @@
+<h2>Welcome {{ user.username }}!</h2>
+{% if user.profile_photo %}
+  <img src="{{ user.profile_photo.url }}" width="100">
+{% endif %}
+<h3>Available Chat Users:</h3>
+<ul>
+  {% for u in users %}
+    <li>{{ u.username }}</li>
+  {% endfor %}
+</ul>

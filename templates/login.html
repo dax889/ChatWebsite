@@ -1,0 +1,19 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% comment %} 
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %} {% endcomment %}
+<div class="form-wrapper">
+    <form method="post">
+        <h2>Login</h2>
+        {% csrf_token %}
+        {% if error %}
+            <p style="color:red;">{{ error }}</p>
+        {% endif %}
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+        <a href="/signup/">Don't have an account? Sign up</a>
+    </form>
+</div>

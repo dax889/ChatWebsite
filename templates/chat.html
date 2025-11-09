@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+  <head>
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+
+    <title>Chat Room</title>
+    
+    
+  </head>
+
+ <body>
+
+  <!-- Chat Header -->
+  <div class="chat-header">
+    <img src="{{ request.user.profile_photo.url }}" class="profile-img" alt="Profile Photo">
+    <span class="user-name">{{ request.user.username }}</span>
+
+    <!-- Right-side Icons -->
+    <div class="header-icons">
+      <!-- Search Icon -->
+      <span class="search-icon">
+        <img src="{% static 'search.png' %}" alt="Search" />
+      </span>
+
+      <!-- Three-Dot Menu -->
+      <div class="menu-container">
+        <span class="menu-icon" onclick="toggleMenu()">⋮</span>
+        <div class="dropdown-menu" id="dropdown-menu">
+          <ul>
+            <li><a href="#">View Profile</a></li>
+            <li><a href="#">Delete Chat</a></li>
+            <li><a href="#">Block User</a></li>
+          </ul>
+        </div>
+      </div>  
+    </div>
+  </div>
+
+
+  <!-- Chat Container -->
+  <div class="chat-container">
+    <!-- Chat Box -->
+    <div class="chat-box" id="chat-box">
+      <!-- Example Static Messages -->
+      <div class="message you">
+        Hey, how are you?
+        <div class="timestamp">3:45 PM</div>
+      </div>
+      <div class="message other">
+        I'm good! You?
+        <div class="timestamp">3:46 PM</div>
+      </div>
+
+      <!-- Dynamic Messages -->
+      <div class="chat-box" id="chat-box">
+        {% for msg in messages %}
+          <div class="message {% if msg.sender == request.user %}you{% else %}other{% endif %}">
+            {% if msg.image %}
+            <img src="{{ msg.image.url }}" alt="Image" style="max-width: 200px;" />
+            {% endif %}
+            {% if msg.text %}
+              <p>{{ msg.text }}</p>
+            {% endif %}
+            <div class="timestamp" data-timestamp="{{ msg.timestamp|date:'c' }}"></div>
+          </div>
+        {% endfor %}
+      </div>
+
+    <!-- Message Input -->
+    <div class="message-input">
+      <form method="POST" enctype="multipart/form-data" class="chat-form">
+        {% csrf_token %}
+        <div class="chat-input-wrapper">
+          
+          <!-- Emoji Icon -->
+           <div class="emoji-dropdown-container">
+            <button type="button" class="emoji-toggle">😊</button>
+            <div class="emoji-dropdown" id="emoji-dropdown">
+              😀 😃 😄 😁 😆 😅 😂 🤣 😊 😇 🙂
+              😍 😘 😗 😙 😚 😋 😜 😝 😛 🤑 🤗 🙃
+              😎 🤓 🧐 😕 🙁 ☹️ 😮 😯 😲 😳 😱 😨
+            </div>
+           </div>
+          <!-- Text Input from Django Form -->
+           <input type="text" name="text" id="chat-text-input" class="chat-text-input" placeholder="Type a message..." />
+
+          <!-- Upload Icon and Input -->
+          <label for="id_image" class="upload-icon">
+            <img src="{% static 'plus.png' %}" alt="Upload" />
+          </label>
+          {{ form.image }}
+
+          <!-- Mic Icon -->
+          <label class="mic-icon">
+            <img src="{% static 'mic.png' %}" alt="Mic" />
+          </label>
+
+          <!-- Submit Button -->
+          <button type="submit" id="send-button" disabled>Send</button>
+        </div>
+        </form>
+
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/index.min.js"></script>
+  <script src="/static/style.js"></script>
+  
+
+</body>
+</html>
+
+
+
+
+
+
